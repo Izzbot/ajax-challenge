@@ -1,8 +1,4 @@
 "use strict";
-/*
-    app.js, main Angular application script
-    define your module and controllers here
-*/
 
 // Set up the URL for easy coding
 var commentsUrl = 'https://api.parse.com/1/classes/comments';
@@ -21,7 +17,9 @@ angular.module('CommenterApp', ['ui.bootstrap'])
         // Initialize a new Comment object
         $scope.newComment = {score: 0};
 
-		// Allows us to grab the latest comments from Parse
+		/*
+		 * Allows us to grab the latest comments from Parse
+		 */
         $scope.refreshComments = function() {
             $scope.loading = true;
 
@@ -43,8 +41,12 @@ angular.module('CommenterApp', ['ui.bootstrap'])
                 });
         };
 
-        // Adds a comment to the list
+        /*
+         * Adds a comment to the list
+         */ 
         $scope.addComment = function() {
+	        // No data sanitization is coded for this challenge
+    
             $scope.loading = true;
             $http.post(commentsUrl, $scope.newComment)
                 .success(function(responseData) {
@@ -60,7 +62,9 @@ angular.module('CommenterApp', ['ui.bootstrap'])
                 });
         };
 
-        // Updates a comment
+        /*
+         * Updates a comment
+         */
         $scope.updateComment = function(comment) {
           $scope.loading = true;
           $http.put(commentsUrl + '/' + comment.objectId, comment)
@@ -76,12 +80,16 @@ angular.module('CommenterApp', ['ui.bootstrap'])
         };
 
 
-        // Changes the score of a comment
+        /*
+         *  Changes the score of a comment
+         */
         $scope.changeScore = function(comment, amount) {
             
             // Don't let them make the score less than 0
             if (comment.score + amount >=0) {
 	            $scope.loading = true;
+				
+				// increase score using atomic increment
 	            $http.put(commentsUrl + '/' + comment.objectId, {
 	                score: {
 	                    __op: 'Increment',
@@ -101,7 +109,9 @@ angular.module('CommenterApp', ['ui.bootstrap'])
 
         };
 
-		// Deletes the comment
+		/*
+		 * Deletes the comment
+		 */
 		$scope.deleteComment = function(comment) {
           $scope.loading = true;
           $http.delete(commentsUrl + '/' + comment.objectId)
@@ -112,6 +122,7 @@ angular.module('CommenterApp', ['ui.bootstrap'])
                   $scope.errorMessage = err;
               })
               .finally(function() {
+              	// Refresh the list
               	$scope.refreshComments();
               	$scope.loading = false;
               });
