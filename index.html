@@ -15,22 +15,60 @@
     <body>
 
         <main class="container" ng-app="CommenterApp" ng-controller="CommentsController">
-            <section>
-                <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
-                <h1>The Super Bass-o-Matic '76</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia cumque deserunt ullam repudiandae nisi corporis! Ipsum, ducimus commodi, itaque porro distinctio consequuntur! Autem doloremque numquam nemo ex nulla tempora quis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus veritatis facere, commodi cumque ab atque dolore ducimus obcaecati ipsa, impedit! Consequuntur, eligendi iure cumque!</p>
-            </section>
 
-            <section>
+	            <section class="box-wrapper">
+	                <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
+	                <h1>The Super Bass-o-Matic '76</h1>
+	                <p>Skateboard ethical pickled shabby chic paleo photo booth pop-up. Paleo gluten-free sustainable, normcore tousled freegan typewriter retro keytar Godard readymade Neutra messenger bag High Life mumblecore. Kickstarter hashtag Vice kogi meggings freegan cred.</p>
+	            </section>
+	
+	
+	            <section class="box-wrapper">
+					<div class="row">
+						<div class="col-sm-10">
+			                <h2>Comments</h2>
+						</div>
+						<div class="col-sm-2">
+			                <img src="img/ajax-spinner-sm.gif" alt="ajax animation" ng-if="loading"/>
+		                    <button class="btn btn-primary pull-right" ng-click="refreshComments()">Refresh</button>
+						</div>
+					</div>
+
+					<section class="comment" ng-repeat="comment in comments">
+						<div class="comment-title-row row">
+							<div class="col-sm-1">
+							  {{comment.name}} : 
+							</div>
+							<div class="col-sm-11">
+							  {{comment.title}}
+							</div>
+						</div>
+
+						<div class="comment-border-row row">
+							<div class="col-sm-2">
+							  <rating max="5" ng-model="comment.rating" readonly="true"></rating>
+							</div>
+							<div class="col-sm-10">
+								<div class="pull-right">
+									<span>{{comment.score}}</span>
+	                                <span class="glyphicon glyphicon-thumbs-up" ng-click="changeScore(comment, 1)"></span>
+	                                <span class="glyphicon glyphicon-thumbs-down" ng-click="changeScore(comment, -1)"></span>
+								</div>
+							</div>
+						</div>
+						<div class="comment-body-row row">
+							<div class="col-sm-10">
+								{{comment.body}}
+							</div>	
+							<div class="col-sm-2">
+		                        <button type="delete" class="btn btn-xs pull-right" ng-disabled="loading" ng-click="deleteComment(comment)">Delete</button>
+							</div>	
+						</div>
+					</section>
+	            </section>
+
+            <section class="box-wrapper">
                 <h2>Add a Comment</h2>
-                <!--  
-                put a form here for entering a new comment
-                the user must select a rating, and enter a name, title, and comment body
-                before the comment can be saved to the server
-                for the rating selection, use the Angular Bootstrap Rating directive 
-                http://angular-ui.github.io/bootstrap/#/rating
-                their script file is included below
-                -->
                 <form role="form" class="form-horizontal">
                     <div class="form-group">
 						<div class="col-sm-1">
@@ -45,8 +83,8 @@
 	                        <rating max="5" ng-model="newComment.rating"></rating>
 						</div>
 	                    <div class="col-sm-2">
-	                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="addComment()">Submit Comment</button>
                             <img src="img/ajax-spinner-sm.gif" alt="ajax animation" ng-if="loading"/>
+	                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="addComment()">Submit Comment</button>
 	                    </div>
 					</div>
 
@@ -73,44 +111,6 @@
                     <div class="form-group">
                     </div>
                 </form>
-
-            </section>
-
-            <section>
-                <h2>Comments</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Rating</th>
-                            <th>Title</th>
-                            <th>Body</th>
-                            <th>Score</th>
-                            <th>Delete?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="comment in comments">
-                            <td><rating max="5" ng-model="comment.rating" readonly="true"></rating></td>
-                            <td>{{comment.title}}</td>
-                            <td>{{comment.body}}</td>
-                            <td>
-                                <span>{{comment.score}}</span>
-                                <span class="glyphicon glyphicon-thumbs-up" ng-click="changeScore(comment, 1)"></span>
-                                <span class="glyphicon glyphicon-thumbs-down" ng-click="changeScore(comment, -1)"></span>
-                            </td>
-                            <td>
-		                        <button type="delete" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="deleteComment(comment)">Delete</button>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p>
-                    <button class="btn btn-primary" ng-click="refreshComments()">Refresh</button>
-                </p>
-                <img src="img/ajax-spinner-sm.gif" alt="ajax animation" ng-if="loading"/>
-
 
             </section>
 
