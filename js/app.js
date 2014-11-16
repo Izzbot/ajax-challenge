@@ -22,12 +22,17 @@ angular.module('CommenterApp', ['ui.bootstrap'])
         $scope.newComment = {score: 0};
 
 		// Allows us to grab the latest comments from Parse
-        $scope.refreshComments = function(predicate) {
+        $scope.refreshComments = function() {
             $scope.loading = true;
 
-			$scope.predicate = predicate;
             $http.get(commentsUrl)
                 .success(function(data) {
+                	// Sort the results by score
+                	data.results.sort(function(a, b){
+                		return b.score-a.score
+                	})
+                    
+                    // Assign the results
                     $scope.comments = data.results;
                 })
                 .error(function(err) {
@@ -96,7 +101,23 @@ angular.module('CommenterApp', ['ui.bootstrap'])
 
         };
 
+		// Deletes the comment
+		$scope.deleteComment = function(comment) {
+          $scope.loading = true;
+          $http.delete(commentsUrl + '/' + comment.objectId)
+              .success(function() {
+                // Don't need to to much upon a success
+              })
+              .error(function() {
+                  $scope.errorMessage = err;
+              })
+              .finally(function() {
+              	$scope.refreshComments();
+              	$scope.loading = false;
+              });
+
+		};
 
         // Refresh upon load
-        $scope.refreshComments('-score');
+        $scope.refreshComments();
     });

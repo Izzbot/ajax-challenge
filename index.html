@@ -46,6 +46,7 @@
 						</div>
 	                    <div class="col-sm-2">
 	                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="addComment()">Submit Comment</button>
+                            <img src="img/ajax-spinner-sm.gif" alt="ajax animation" ng-if="loading"/>
 	                    </div>
 					</div>
 
@@ -88,7 +89,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="comment in comments | orderBy : predicate">
+                        <tr ng-repeat="comment in comments">
                             <td><rating max="5" ng-model="comment.rating" readonly="true"></rating></td>
                             <td>{{comment.title}}</td>
                             <td>{{comment.body}}</td>
@@ -98,7 +99,7 @@
                                 <span class="glyphicon glyphicon-thumbs-down" ng-click="changeScore(comment, -1)"></span>
                             </td>
                             <td>
-		                        <button type="delete" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="deleteComment()">Delete</button>
+		                        <button type="delete" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="deleteComment(comment)">Delete</button>
                             </td>
 
                         </tr>
@@ -108,6 +109,8 @@
                 <p>
                     <button class="btn btn-primary" ng-click="refreshComments()">Refresh</button>
                 </p>
+                <img src="img/ajax-spinner-sm.gif" alt="ajax animation" ng-if="loading"/>
+
 
             </section>
 
