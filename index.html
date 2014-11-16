@@ -7,16 +7,14 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.2/angular.min.js"></script>
-        <script src="lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
         <script src="js/app.js"></script>
 
     </head>
     <body>
 
-        <main class="container">
+        <main class="container" ng-app="CommenterApp" ng-controller="CommentsController">
             <section>
                 <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
                 <h1>The Super Bass-o-Matic '76</h1>
@@ -47,7 +45,7 @@
 	                        <rating max="5" ng-model="newComment.rating"></rating>
 						</div>
 	                    <div class="col-sm-2">
-	                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="inserting" ng-click="addComment()">Submit Comment</button>
+	                        <button type="submit" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="addComment()">Submit Comment</button>
 	                    </div>
 					</div>
 
@@ -90,17 +88,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="comment in comments">
-                            <td><rating max="5" ng-model="comment.rating"></rating></td>
+                        <tr ng-repeat="comment in comments | orderBy : predicate">
+                            <td><rating max="5" ng-model="comment.rating" readonly="true"></rating></td>
                             <td>{{comment.title}}</td>
                             <td>{{comment.body}}</td>
                             <td>
-                                <span>{{comment.score || 0}}</span>
+                                <span>{{comment.score}}</span>
                                 <span class="glyphicon glyphicon-thumbs-up" ng-click="changeScore(comment, 1)"></span>
                                 <span class="glyphicon glyphicon-thumbs-down" ng-click="changeScore(comment, -1)"></span>
                             </td>
                             <td>
-                            	<input type="checkbox" ng-model="task.done" ng-change="updateTask(task)"/>
+		                        <button type="delete" class="btn btn-primary pull-right" ng-disabled="loading" ng-click="deleteComment()">Delete</button>
                             </td>
 
                         </tr>
